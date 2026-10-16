@@ -1,0 +1,983 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<CartoProcesses>
+    <Groups>
+        <ProcessGroup name="Group Create Alternate Masks" description="Create Alternate Masks">
+            <GroupProcessTypeReference name="GroupCartoProcess" />
+            <Processes>
+                <Process name="Create Masks Eisenbahn (RMASK): Tunnelwiderlager Einspur" />
+            </Processes>
+        </ProcessGroup>
+        <ProcessGroup name="Group Create Feature Masks" description="Create Feature Masks">
+            <GroupProcessTypeReference name="GroupCartoProcess" />
+            <Processes>
+                <Process name="Create Masks Boeschung_Symb: Boeschung, Steinboeschung, Boeschung_Gletscher" />
+                <Process name="Create Masks Gebaeude UEBER Strasse, Eisenbahn, Verkehrsareale, Baute_Ply" />
+                <Process name="Create Masks Gasthof_abgelegen UEBER Strasse, Eisenbahn, Verkehrsareale, Baute_Ply" />
+                <Process name="Create Masks Staudamm_Symb: Staudamm" />
+                <Process name="Create Masks Strasse: Weg_1m_Bruecke (Widerlager) UEBER Strasse (Kontur)" />
+            </Processes>
+        </ProcessGroup>
+        <ProcessGroup name="Group Create Raster Masks" description="Create Raster Masks">
+            <GroupProcessTypeReference name="GroupCartoProcess" />
+            <Processes>
+                <Process name="Create Masks Baute_Lin (RMASK): Bobbahn_Rodelbahn, Laufbahn, Mauer, Verbauung, Scheibenstand" />
+                <Process name="Create Masks Baute_Lin (RMASK): Schusslinie, Trockenmauer" />
+                <Process name="Create Masks Baute_Pkt (RMASK): Brunnen, Quelle, Wasserversorgung" />
+                <Process name="Create Masks Baute_Pkt (RMASK): Antenne_auf_Aussichtsturm, Antenne_gross" />
+                <Process name="Create Masks Eisenbahn (RMASK): Einspur (ohne Tunnelsignaturen)" />
+                <Process name="Create Masks Eisenbahn (RMASK): Tunnelspur und -widerlager" />
+                <Process name="Create Masks Gebaeude (RMASK): Diverse Symbole" />
+                <Process name="Create Masks Gebaeude (RMASK): Gasthof_abgelegen" />
+                <Process name="Create Masks Gewaesser_Lin (RMASK): Wasserfall" />
+                <Process name="Create Masks Oev_Lin (RMASK): Foerderband, Transportseil" />
+                <Process name="Create Masks Oev_Lin (RMASK): Skilift" />
+                <Process name="Create Masks Strasse (RMASK): Markierte_Spur" />
+                <Process name="Create Masks Strasse (RMASK): Weg_2m_Naturbelag, Weg_2m_nicht-befahrbar, Weg_1m" />
+            </Processes>
+        </ProcessGroup>
+        <ProcessGroup name="Group Create CrossingMasks" description="Create CrossingMasks">
+            <GroupProcessTypeReference name="GroupCartoProcess" />
+            <Processes>
+                <Process name="Create CrossingMasks STRASSE mehrlinig unter STRASSE, EISENBAHN mehrlinig" />
+                <Process name="Create CrossingMasks STRASSE mehrlinig unter EISENBAHN einlinig (Dec)" />
+                <Process name="Create CrossingMasks STRASSE einlinig unter STRASSE, EISENBAHN einlinig (Dec)" />
+                <Process name="Create CrossingMasks STRASSE einlinig unter EISENBAHN mehrlinig" />
+                <Process name="Create CrossingMasks STRASSE mehrlinig Niveau GEWAESSER_LIN (Furt)" />
+                <Process name="Create CrossingMasks STRASSE mehrlinig Niveau GEWAESSER_PLY (Furt)" />
+                <Process name="Create CrossingMasks STRASSE mehrlinig Niveau EISENBAHN" />
+                <Process name="Create CrossingMasks EISENBAHN unter EISENBAHN einlinig" />
+                <Process name="Create CrossingMasks EISENBAHN unter EISENBAHN mehrlinig" />
+                <Process name="Create CrossingMasks EISENBAHN (auf Strasse) unter STRASSE" />
+            </Processes>
+        </ProcessGroup>
+        <ProcessGroup name="Group Roundabout Processes" description="Adjust Roundabouts">
+          <GroupProcessTypeReference name="GroupCartoProcess" />
+          <Processes>
+            <Process name="Roundabout Strasse Linie" />
+          </Processes>
+        </ProcessGroup>
+        <ProcessGroup name="Group Escarpment Processes" description="Create Escarpments">
+            <GroupProcessTypeReference name="GroupCartoProcess" />
+            <Processes>
+                <Process name="Create Escarpments Baute_Lin (Staudamm)" />
+                <Process name="Create Escarpments Kleinform_Lin (Boeschung)" />
+                <Process name="Create Escarpments Kleinform_Lin (Steinboeschung)" />
+            </Processes>
+        </ProcessGroup>
+        <ProcessGroup name="Group Create Feature Markers" description="Create Feature Markers">
+            <GroupProcessTypeReference name="GroupCartoProcess" />
+            <Processes>
+                <Process name="Create Feature Markers Freizeitareal (Campingplatz)" />
+                <Process name="Create Feature Markers Nutzungsareal (Unterwerkareal)" />
+            </Processes>
+        </ProcessGroup>
+    </Groups>
+    <Processes>
+        <Process name="Align Hatches Baute_Ply (Solarpanel)" description="Symbology Carto Process for Feature Class: DKM25_BAUTE_PLY&#xD;&#xA;Calculates the angle of alignment of the line hatches">
+            <TypeReference name="AlignSymbols" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_BAUTE_PLY;SYMBOL = 6" />
+                <Parameter name="InputAttributes" value="AUSRICHTUNG = angle" />
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.3)" />
+            </Parameters>
+        </Process>
+        <Process name="Align Hatches Gebaeude (Flugdach, Offenes_Gebaeude, Treibhaus)" description="Symbology Carto Process for Feature Class: DKM25_GEBAEUDE&#xD;&#xA;Calculates the angle of alignment of the line hatches">
+            <TypeReference name="AlignSymbols" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_GEBAEUDE;SYMBOL = 2" />
+                <Parameter name="InputAttributes" value="AUSRICHTUNG = angle + 45" />
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.3)" />
+            </Parameters>
+        </Process>
+        <Process name="Align Markers Baute_Ply (Sportplatz)" description="Symbology Carto Process for Feature Class: DKM25_BAUTE_PLY&#xD;&#xA;Calculates the angle of alignment of the markers">
+            <TypeReference name="AlignSymbols" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_BAUTE_PLY;SYMBOL = 7" />
+                <Parameter name="InputAttributes" value="AUSRICHTUNG = angle" />
+                <Parameter name="SimplificationTolerance" value="0" />
+            </Parameters>
+        </Process>
+        <Process name="Align Markers Nutzungsareal (Obstanlage)" description="Symbology Carto Process for Feature Class: DKM25_NUTZUNGSAREAL&#xD;&#xA;Calculates the angle of alignment of the markers">
+            <TypeReference name="AlignSymbols" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_NUTZUNGSAREAL;SYMBOL = 4" />
+                <Parameter name="InputAttributes" value="AUSRICHTUNG = angle" />
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.3)" />
+            </Parameters>
+        </Process>
+        <Process name="Calculate Line Junctions Eisenbahn" description="Sets CAP_STYLE (Butt)">
+            <TypeReference name="CalculateLineJunctions" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_EISENBAHN;SYMBOL IN (4,5,16)" />
+                <Parameter name="ConnectedDatasets" value="DKM25_EISENBAHN" />
+                <Parameter name="ConnectionTolerance" value="0.01" />
+                <Parameter name="ConnectionCount" value="0" />
+                <Parameter name="LineCapFieldName" value="CAP_STYLE" />
+                <Parameter name="LineCapStyle" value="Butt" />
+            </Parameters>
+        </Process>
+        <Process name="Calculate Line Junctions Strasse" description="Calculates Dead Ends; sets CAP_STYLE and cuts Rule Layer FB if necessary">
+            <TypeReference name="CalculateLineJunctions" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_STRASSE;SYMBOL IN (2,3,4,5,30,48) AND OBJEKTART NOT IN (1600) AND KUNSTBAUTE NOT IN (200)" />
+                <Parameter name="ConnectedDatasets" value="DKM25_STRASSE" />
+                <Parameter name="ConnectedDatasets" value="DKM25_VERKEHRSAREAL" />
+                <Parameter name="ConnectionTolerance" value="0.01" />
+                <Parameter name="ConnectionCount" value="0" />
+                <Parameter name="LineCapFieldName" value="CAP_STYLE" />
+                <Parameter name="LineCapStyle" value="Butt" />
+                <Parameter name="CutBeginFieldName" value="CUT_BEGIN_FB" />
+                <Parameter name="CutEndFieldName" value="CUT_END_FB" />
+                <Parameter name="CutLength" value="(LB-FB)/2" />
+            </Parameters>
+        </Process>
+        <Process name="Calculate Line Junctions Strasse (isolierte doppellinige Bruecke)" description="Sets CAP_STYLE (Butt)">
+            <TypeReference name="CalculateLineJunctions" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_STRASSE;SYMBOL IN (2,3,4,5,30,48) AND OBJEKTART IN (1600) AND KUNSTBAUTE IN (200)" />
+                <Parameter name="ConnectedDatasets" value="DKM25_STRASSE" />
+                <Parameter name="ConnectedDatasets" value="DKM25_VERKEHRSAREAL" />
+                <Parameter name="ConnectionTolerance" value="0.01" />
+                <Parameter name="ConnectionCount" value="0" />
+                <Parameter name="LineCapFieldName" value="CAP_STYLE" />
+                <Parameter name="LineCapStyle" value="Butt" />
+            </Parameters>
+        </Process>
+        <Process name="Calculate Line Junctions Strasse (Kreisel)" description="Sets CUT_BEGIN/CUT_END">
+            <TypeReference name="CalculateLineJunctions" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_STRASSE;KREISEL IS null OR KREISEL &lt;&gt; 1" />
+                <Parameter name="TransitionDataset" value="DKM25_STRASSE;KREISEL = 1" />
+                <Parameter name="ConnectedDatasets" value="DKM25_STRASSE" />
+                <Parameter name="ConnectionTolerance" value="0.01" />
+                <Parameter name="TransitionCount" value="2" />
+                <Parameter name="CutBeginFieldName" value="CUT_BEGIN" />
+                <Parameter name="CutEndFieldName" value="CUT_END" />
+                <Parameter name="CutLength" value="LB/2" />
+            </Parameters>
+        </Process>
+        <Process name="Calculate Line Junctions Strasse (Weg_1m + Weg_2m zu Weg_1m_Bruecke)" description="Sets CUT_BEGIN/CUT_END">
+            <TypeReference name="CalculateLineJunctions" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_STRASSE;SYMBOL IN (6,7,8)" />
+                <Parameter name="ConnectedDatasets" value="DKM25_STRASSE;SYMBOL IN (9)" />
+                <Parameter name="ConnectionTolerance" value="0.01" />
+                <Parameter name="ConnectionCount" value="1 10" />
+                <Parameter name="CutBeginFieldName" value="CUT_BEGIN" />
+                <Parameter name="CutEndFieldName" value="CUT_END" />
+                <Parameter name="CutLength" value="0.984375" />
+            </Parameters>
+        </Process>
+        <Process name="Calculate Line Junctions Strasse (Weg_1m zu Weg_2m)" description="Sets CUT_BEGIN/CUT_END">
+            <TypeReference name="CalculateLineJunctions" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_STRASSE;SYMBOL IN (8)" />
+                <Parameter name="ConnectedDatasets" value="DKM25_STRASSE;SYMBOL IN (6,7)" />
+                <Parameter name="TransitionDataset" value="DKM25_STRASSE;SYMBOL NOT IN (6,7)" />
+                <Parameter name="ConnectionTolerance" value="0.01" />
+                <Parameter name="ConnectionCount" value="1" />
+                <Parameter name="TransitionCount" value="0" />
+                <Parameter name="CutBeginFieldName" value="CUT_BEGIN" />
+                <Parameter name="CutEndFieldName" value="CUT_END" />
+                <Parameter name="CutLength" value="0.84375" />
+            </Parameters>
+        </Process>
+        <Process name="Calculate Line Junctions Strasse (Weg_2m_nicht-befahrbar zu Weg_2m_Naturbelag)" description="Sets CUT_BEGIN/CUT_END">
+            <TypeReference name="CalculateLineJunctions" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_STRASSE;SYMBOL IN (7)" />
+                <Parameter name="ConnectedDatasets" value="DKM25_STRASSE;SYMBOL IN (6)" />
+                <Parameter name="TransitionDataset" value="DKM25_STRASSE;SYMBOL NOT IN (6)" />
+                <Parameter name="ConnectionTolerance" value="0.01" />
+                <Parameter name="ConnectionCount" value="1" />
+                <Parameter name="TransitionCount" value="0" />
+                <Parameter name="CutBeginFieldName" value="CUT_BEGIN" />
+                <Parameter name="CutEndFieldName" value="CUT_END" />
+                <Parameter name="CutLength" value="0.84375" />
+            </Parameters>
+        </Process>
+        <Process name="Line Transition Eisenbahn - Tunnel (make Eisenbahn Cap BUTT)" description="Line Transition Eisenbahn - Tunnel (make Eisenbahn Cap BUTT)&#xD;&#xA;Shows line extremity markers or BUTT Line Caps at transitions from the two types.">
+            <TypeReference name="CalculateLineJunctions" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_EISENBAHN;KUNSTBAUTE &lt;&gt; 700" />
+                <Parameter name="TransitionDataset" value="DKM25_EISENBAHN;KUNSTBAUTE = 700" />
+                <Parameter name="ConnectionType" value="AlongEdge" />
+                <Parameter name="ConnectionTolerance" value="0.01" />
+                <Parameter name="TransitionCount" value="1" />
+                <Parameter name="LineCapFieldName" value="CAP_STYLE" />
+                <Parameter name="LineCapStyle" value="Butt" />
+            </Parameters>
+        </Process>
+        <Process name="Line Transition Strasse - Tunnel (make Strasse Cap BUTT)" description="Line Transition Strasse - Tunnel (make Strasse Cap BUTT)&#xD;&#xA;Shows line extremity markers or BUTT Line Caps at transitions from the two types.">
+            <TypeReference name="CalculateLineJunctions" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_STRASSE;SYMBOL NOT IN (31,32,39,40,42,43,44,47)" />
+                <Parameter name="TransitionDataset" value="DKM25_STRASSE;SYMBOL IN (31,32,39,40)" />
+                <Parameter name="ConnectionType" value="AlongEdge" />
+                <Parameter name="ConnectionTolerance" value="0.01" />
+                <Parameter name="TransitionCount" value="1" />
+                <Parameter name="LineCapFieldName" value="CAP_STYLE" />
+                <Parameter name="LineCapStyle" value="Butt" />
+            </Parameters>
+        </Process>
+        <Process name="Line Transition Strasse - Weg (make Strasse Cap BUTT)" description="Line Transition Strasse - Weg (make Strasse Cap BUTT)&#xD;&#xA;Shows line extremity markers or BUTT Line Caps at transitions from the two types.">
+            <TypeReference name="CalculateLineJunctions" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_STRASSE;SYMBOL NOT IN (6,7,8,9,29,31,32,39,40,42,43,44,47)" />
+                <Parameter name="TransitionDataset" value="DKM25_STRASSE;SYMBOL IN (6,7,8,9,29)" />
+                <Parameter name="ConnectionType" value="EndpointsOnly" />
+                <Parameter name="ConnectionTolerance" value="0.01" />
+                <Parameter name="TransitionCount" value="1 3" />
+                <Parameter name="LineCapFieldName" value="CAP_STYLE" />
+                <Parameter name="LineCapStyle" value="Butt" />
+            </Parameters>
+        </Process>
+        <Process name="Line Transition Tunnel - Tunnel and Unterirdische Haltestelle in Eisenbahn (Markers only at the very ends)" description="Line Transition Tunnels and Unterirdische Haltestelle in Eisenbahn (Markers only at the very ends)&#xD;&#xA;Shows line extremity markers at dangles and hides markers at connecting nodes.">
+            <TypeReference name="CalculateLineJunctions" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_EISENBAHN;KUNSTBAUTE = 700" />
+                <Parameter name="ConnectedDatasets" value="DKM25_EISENBAHN;KUNSTBAUTE = 700" />
+                <Parameter name="ConnectionType" value="AlongEdge" />
+                <Parameter name="ConnectionTolerance" value="0.01" />
+                <Parameter name="ConnectionCount" value="1 999" />
+                <Parameter name="ExtremityFieldName" value="EXTREMITY_TYPE" />
+                <Parameter name="InvertExtremityType" value="True" />
+            </Parameters>
+        </Process>
+        <Process name="Line Transition Tunnel - Tunnel in Strasse (Markers only at the very ends) EXTREMITY_TYPE" description="Line Transition Tunnels in Strasse (Markers only at the very ends)&#xD;&#xA;Shows line extremity markers at dangles and hides markers at connecting nodes.">
+            <TypeReference name="CalculateLineJunctions" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_STRASSE;KUNSTBAUTE = 1000" />
+                <Parameter name="ConnectedDatasets" value="DKM25_STRASSE;KUNSTBAUTE = 1000" />
+                <Parameter name="ConnectionType" value="AlongEdge" />
+                <Parameter name="ConnectionTolerance" value="0.01" />
+                <Parameter name="ConnectionCount" value="1 999" />
+                <Parameter name="ExtremityFieldName" value="EXTREMITY_TYPE" />
+                <Parameter name="InvertExtremityType" value="True" />
+            </Parameters>
+        </Process>
+        <Process name="Line Transition Tunnel - Tunnel in Strasse (Markers only at the very ends) EXTREMITY_TYPE2" description="Line Transition Tunnels in Strasse (Markers only at the very ends)&#xD;&#xA;Shows line extremity markers at dangles and hides markers at connecting nodes.">
+            <TypeReference name="CalculateLineJunctions" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_STRASSE;KUNSTBAUTE = 1000" />
+                <Parameter name="ConnectedDatasets" value="DKM25_STRASSE;KUNSTBAUTE = 1000" />
+                <Parameter name="ConnectionType" value="AlongEdge" />
+                <Parameter name="ConnectionTolerance" value="0.01" />
+                <Parameter name="ConnectionCount" value="1 999" />
+                <Parameter name="ExtremityFieldName" value="EXTREMITY_TYPE2" />
+                <Parameter name="InvertExtremityType" value="True" />
+            </Parameters>
+        </Process>
+        <Process name="Control Points at Crossing (Trockenmauer)" description="Symbology Carto Process for Feature Class: DKM25_BAUTE_LIN, Trockenmauer. Calculates control points to adjust point pattern. ">
+            <TypeReference name="SetControlPointsAtCrossings" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_BAUTE_LIN; SYMBOL IN (11)" />
+                <Parameter name="CrossingDatasets" value="DKM25_STRASSE; SYMBOL NOT IN (43,44,49)" />
+                <Parameter name="SnapTolerance" value="mm2mu(0.0125)" />
+                <Parameter name="ControlPointIdValue" value="1" />
+                <Parameter name="CrossingType" value="SymbolOutline" />
+            </Parameters>
+        </Process>
+        <Process name="Control Points at Crossing (Trockenrinne)" description="Symbology Carto Process for Feature Class: DKM25_GEWAESSER_LIN, OA Trockenrinne. Calculates control points to adjust point pattern. ">
+            <TypeReference name="SetControlPointsAtCrossings" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_GEWAESSER_LIN; SYMBOL IN (8)" />
+                <Parameter name="CrossingDatasets" value="DKM25_STRASSE; SYMBOL NOT IN (43,44,49)" />
+                <Parameter name="CrossingDatasets" value="DKM25_EISENBAHN; SYMBOL NOT IN (10,11,12,13,14,15,18)" />
+                <Parameter name="SnapTolerance" value="mm2mu(0.0125)" />
+                <Parameter name="ControlPointIdValue" value="1" />
+            </Parameters>
+        </Process>
+        <Process name="Roundabout Strasse Linie" description="Roundabout Strasse Linie: Adds a cut distance where a Strasse joins a Strasse Line-Roundabout.">
+            <TypeReference name="AdjustRoundabouts" />
+            <Parameters>
+                <Parameter name="RoundaboutDataset" value="DKM25_STRASSE; KREISEL = 1" />
+                <Parameter name="OutputLineDataset" value="DKM25_STRASSE; KREISEL IS null OR KREISEL &lt;&gt; 1" />
+                <Parameter name="ConnectionTolerance" value="mm2mu(0.0125)" />
+                <Parameter name="CutDistance" value="mm2pt(0.1)" />
+                <Parameter name="CutBeginFieldName" value="CUT_BEGIN" />
+                <Parameter name="CutEndFieldName" value="CUT_END" />
+                <Parameter name="RetractOnlyIfWider" value="False" />
+            </Parameters>
+        </Process>
+        <Process name="Create Masks Baute_Lin (RMASK): Bobbahn_Rodelbahn, Laufbahn, Mauer, Verbauung, Scheibenstand" description="Mask Carto Process for Feature Class: DKM25_BAUTE_LIN&#xD;&#xA;Creates masks to mask raster data or black contour lines. EXECUTE ON SELECTED FEATURES ONLY.">
+            <TypeReference name="CreateFeatureMasks"/>
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_BAUTE_LIN;SYMBOL IN (1,7,16,17,18)"/>
+                <Parameter name="MaskDataset" value="DKM25_RMASK"/>
+                <Parameter name="MaskAttributes" value="SYMBOL=1"/>
+                <Parameter name="MaskAssociation" value="ORIGINCLASSFIELDNAME=FEATURECLASSNAME;ORIGINOIDFIELDNAME=SOURCEOID"/>
+                <Parameter name="MaskMargin" value="mm2mu(0.2)"/>
+                <Parameter name="MaskType" value="Exact"/>
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.005)"/>
+            </Parameters>
+        </Process>
+        <Process name="Create Masks Baute_Lin (RMASK): Schusslinie, Trockenmauer" description="Mask Carto Process for Feature Class: DKM25_BAUTE_LIN&#xD;&#xA;Creates masks to mask raster data or black contour lines. EXECUTE ON SELECTED FEATURES ONLY.">
+            <TypeReference name="CreateFeatureMasks"/>
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_BAUTE_LIN;SYMBOL IN (8,11)"/>
+                <Parameter name="MaskDataset" value="DKM25_RMASK"/>
+                <Parameter name="MaskAttributes" value="SYMBOL=1"/>
+                <Parameter name="MaskAssociation" value="ORIGINCLASSFIELDNAME=FEATURECLASSNAME;ORIGINOIDFIELDNAME=SOURCEOID"/>
+                <Parameter name="MaskMargin" value="mm2mu(0.3)"/>
+                <Parameter name="MaskType" value="ShapeBuffer"/>
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.005)"/>
+            </Parameters>
+        </Process>
+        <Process name="Create Masks Baute_Pkt (RMASK): Brunnen, Quelle, Wasserversorgung" description="Mask Carto Process for Feature Class: DKM25_BAUTE_PKT&#xD;&#xA;Creates masks to mask raster data or black contour lines. EXECUTE ON SELECTED FEATURES ONLY.">
+            <TypeReference name="CreateFeatureMasks"/>
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_BAUTE_PKT;SYMBOL IN (5,10,12)"/>
+                <Parameter name="MaskDataset" value="DKM25_RMASK"/>
+                <Parameter name="MaskAttributes" value="SYMBOL=1"/>
+                <Parameter name="MaskAssociation" value="ORIGINCLASSFIELDNAME=FEATURECLASSNAME;ORIGINOIDFIELDNAME=SOURCEOID"/>
+                <Parameter name="MaskMargin" value="mm2mu(0.2)"/>
+                <Parameter name="MaskType" value="Exact"/>
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.005)"/>
+            </Parameters>
+        </Process>
+        <Process name="Create Masks Baute_Pkt (RMASK): Antenne_auf_Aussichtsturm, Antenne_gross" description="Mask Carto Process for Feature Class: DKM25_BAUTE_PKT&#xD;&#xA;Creates masks to mask raster data or black contour lines. EXECUTE ON SELECTED FEATURES ONLY.">
+            <TypeReference name="CreateFeatureMasks"/>
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_BAUTE_PKT;SYMBOL IN (1,2)"/>
+                <Parameter name="MaskDataset" value="DKM25_RMASK"/>
+                <Parameter name="MaskAttributes" value="SYMBOL=1"/>
+                <Parameter name="MaskAssociation" value="ORIGINCLASSFIELDNAME=FEATURECLASSNAME;ORIGINOIDFIELDNAME=SOURCEOID"/>
+                <Parameter name="MaskMargin" value="mm2mu(0.2)"/>
+                <Parameter name="MaskOnlySymbolLayers" value="1"/>
+                <Parameter name="MaskType" value="Exact"/>
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.005)"/>
+            </Parameters>
+        </Process>
+        <Process name="Create Masks Boeschung_Symb: Boeschung, Steinboeschung, Boeschung_Gletscher" description="Mask Carto Process for Feature Class: DKM25_BOESCHUNG_SYMB&#xD;&#xA;Creates masks">
+            <TypeReference name="CreateFeatureMasks"/>
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_BOESCHUNG_SYMB;SYMBOL IN (1,2,3)"/>
+                <Parameter name="MaskDataset" value="DKM25_BOESCHUNG_SYMB_MASK"/>
+                <Parameter name="MaskAttributes" value="SYMBOL=1"/>
+                <Parameter name="MaskAssociation" value="DKM25_BOESCHUNG_SYMB_MREL"/>
+                <Parameter name="MaskMargin" value="mm2mu(0.2)"/>
+                <Parameter name="MaskType" value="Exact"/>
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.005)"/>
+            </Parameters>
+        </Process>
+        <Process name="Create Masks Eisenbahn (RMASK): Einspur (ohne Tunnelsignaturen)" description="Mask Carto Process for Feature Class: DKM25_EISENBAHN&#xD;&#xA;Creates masks to mask raster data or black contour lines. EXECUTE ON SELECTED FEATURES ONLY.">
+            <TypeReference name="CreateFeatureMasks"/>
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_EISENBAHN;SYMBOL IN (4,8)"/>
+                <Parameter name="MaskDataset" value="DKM25_RMASK"/>
+                <Parameter name="MaskAttributes" value="SYMBOL=1"/>
+                <Parameter name="MaskAssociation" value="ORIGINCLASSFIELDNAME=FEATURECLASSNAME;ORIGINOIDFIELDNAME=SOURCEOID"/>
+                <Parameter name="MaskMargin" value="mm2mu(0.08)"/>
+                <Parameter name="MaskType" value="Exact"/>
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.005)"/>
+            </Parameters>
+        </Process>
+        <Process name="Create Masks Eisenbahn (RMASK): Tunnelspur und -widerlager" description="Mask Carto Process for Feature Class: DKM25_EISENBAHN&#xD;&#xA;Creates masks to mask raster data or black contour lines. EXECUTE ON SELECTED FEATURES ONLY.">
+            <TypeReference name="CreateFeatureMasks"/>
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_EISENBAHN;SYMBOL IN (10,11,12,13,14,18)"/>
+                <Parameter name="MaskDataset" value="DKM25_RMASK"/>
+                <Parameter name="MaskAttributes" value="SYMBOL=1"/>
+                <Parameter name="MaskAssociation" value="ORIGINCLASSFIELDNAME=FEATURECLASSNAME;ORIGINOIDFIELDNAME=SOURCEOID"/>
+                <Parameter name="MaskMargin" value="mm2mu(0.08)"/>
+                <Parameter name="MaskType" value="Exact"/>
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.005)"/>
+            </Parameters>
+        </Process>
+        <Process name="Create Masks Eisenbahn (RMASK): Tunnelwiderlager Einspur" description="Mask Carto Process for Feature Class: DKM25_EISENBAHN&#xD;&#xA;Creates masks to mask raster data or black contour lines. EXECUTE ON SELECTED FEATURES ONLY.&#xD;&#xA;Execute with shortcut Ctrl+F7.">
+            <TypeReference name="CreateFeatureMasks"/>
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_EISENBAHN;SYMBOL IN (10,11) AND (EXTREMITY_TYPE &lt;&gt; 3 OR EXTREMITY_TYPE2 &lt;&gt; 3)"/>
+                <Parameter name="MaskDataset" value="DKM25_RMASK"/>
+                <Parameter name="MaskAttributes" value="SYMBOL=1"/>
+                <Parameter name="MaskAssociation" value="ORIGINCLASSFIELDNAME=FEATURECLASSNAME;ORIGINOIDFIELDNAME=SOURCEOID"/>
+                <Parameter name="MaskMargin" value="mm2mu(0.2)"/>
+                <Parameter name="MaskOnlySymbolLayers" value="1,2" />
+                <Parameter name="MaskType" value="Exact"/>
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.005)"/>
+            </Parameters>
+        </Process>
+        <Process name="Create Masks Gebaeude (RMASK): Diverse Symbole" description="Mask Carto Process for Feature Class: DKM25_GEBAEUDE&#xD;&#xA;Creates masks to mask raster data or black contour lines. EXECUTE ON SELECTED FEATURES ONLY.">
+            <TypeReference name="CreateFeatureMasks"/>
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_GEBAEUDE;SYMBOL IN (1,2,5,6,7,8,9,10,12,13,16,18)"/>
+                <Parameter name="MaskDataset" value="DKM25_RMASK"/>
+                <Parameter name="MaskAttributes" value="SYMBOL=1"/>
+                <Parameter name="MaskAssociation" value="ORIGINCLASSFIELDNAME=FEATURECLASSNAME;ORIGINOIDFIELDNAME=SOURCEOID"/>
+                <Parameter name="MaskMargin" value="mm2mu(0.2)"/>
+                <Parameter name="MaskType" value="Exact"/>
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.005)"/>
+                <Parameter name="FillHoles" value="False"/>
+            </Parameters>
+        </Process>
+        <Process name="Create Masks Gebaeude (RMASK): Gasthof_abgelegen" description="Mask Carto Process for Feature Class: DKM25_GEBAEUDE&#xD;&#xA;Creates masks to mask raster data or black contour lines. EXECUTE ON SELECTED FEATURES ONLY.">
+            <TypeReference name="CreateFeatureMasks"/>
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_GEBAEUDE;SYMBOL IN (3,4)"/>
+                <Parameter name="MaskDataset" value="DKM25_RMASK"/>
+                <Parameter name="MaskAttributes" value="SYMBOL=1"/>
+                <Parameter name="MaskAssociation" value="ORIGINCLASSFIELDNAME=FEATURECLASSNAME;ORIGINOIDFIELDNAME=SOURCEOID"/>
+                <Parameter name="MaskMargin" value="mm2mu(0.2)"/>
+                <Parameter name="MaskOnlySymbolLayers" value="0"/>
+                <Parameter name="MaskType" value="Exact"/>
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.005)"/>
+            </Parameters>
+        </Process>
+        <Process name="Create Masks Gebaeude UEBER Strasse, Eisenbahn, Verkehrsareale, Baute_Ply" description="Mask Carto Process for Feature Class: DKM25_GEBAEUDE&#xD;&#xA;Creates masks.">
+            <TypeReference name="CreateFeatureMasks"/>
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_GEBAEUDE;SYMBOL IN (1,2,5,6,7,8,9,10,12,13,16,18) AND STUFE&gt;=1"/>
+                <Parameter name="MaskDataset" value="DKM25_GEBAEUDE_MASK"/>
+                <Parameter name="MaskAttributes" value="SYMBOL=1"/>
+                <Parameter name="MaskAssociation" value="DKM25_GEBAEUDE_MREL"/>
+                <Parameter name="MaskMargin" value="mm2mu(0)"/>
+                <Parameter name="MaskType" value="Exact"/>
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.005)"/>
+                <Parameter name="FillHoles" value="False"/>
+            </Parameters>
+        </Process>
+        <Process name="Create Masks Gasthof_abgelegen UEBER Strasse, Eisenbahn, Verkehrsareale, Baute_Ply" description="Mask Carto Process for Feature Class: DKM25_GEBAEUDE&#xD;&#xA;Creates masks.">
+            <TypeReference name="CreateFeatureMasks"/>
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_GEBAEUDE;SYMBOL IN (3,4) AND STUFE&gt;=1"/>
+                <Parameter name="MaskDataset" value="DKM25_GEBAEUDE_MASK"/>
+                <Parameter name="MaskAttributes" value="SYMBOL=1"/>
+                <Parameter name="MaskAssociation" value="DKM25_GEBAEUDE_MREL"/>
+                <Parameter name="MaskMargin" value="mm2mu(0)"/>
+                <Parameter name="MaskOnlySymbolLayers" value="0"/>
+                <Parameter name="MaskType" value="Exact"/>
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.005)"/>
+                <Parameter name="FillHoles" value="False"/>
+            </Parameters>
+        </Process>
+        <Process name="Create Masks Gewaesser_Lin (RMASK): Wasserfall" description="Mask Carto Process for Feature Class: DKM25_GEWAESSER_LIN&#xD;&#xA;Creates masks to mask raster data or black contour lines. EXECUTE ON SELECTED FEATURES ONLY.">
+            <TypeReference name="CreateFeatureMasks"/>
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_GEWAESSER_LIN;SYMBOL IN (10)"/>
+                <Parameter name="MaskDataset" value="DKM25_RMASK"/>
+                <Parameter name="MaskAttributes" value="SYMBOL=1"/>
+                <Parameter name="MaskAssociation" value="ORIGINCLASSFIELDNAME=FEATURECLASSNAME;ORIGINOIDFIELDNAME=SOURCEOID"/>
+                <Parameter name="MaskMargin" value="mm2mu(0.2)"/>
+                <Parameter name="MaskOnlySymbolLayers" value="2" />
+                <Parameter name="MaskType" value="Exact"/>
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.005)"/>
+            </Parameters>
+        </Process>
+        <Process name="Create Masks Oev_Lin (RMASK): Foerderband, Transportseil" description="Mask Carto Process for Feature Class: DKM25_OEV_LIN&#xD;&#xA;Creates masks to mask raster data or black contour lines. EXECUTE ON SELECTED FEATURES ONLY.">
+            <TypeReference name="CreateFeatureMasks"/>
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_OEV_LIN;SYMBOL IN (1,7)"/>
+                <Parameter name="MaskDataset" value="DKM25_RMASK"/>
+                <Parameter name="MaskAttributes" value="SYMBOL=1"/>
+                <Parameter name="MaskAssociation" value="ORIGINCLASSFIELDNAME=FEATURECLASSNAME;ORIGINOIDFIELDNAME=SOURCEOID"/>
+                <Parameter name="MaskMargin" value="mm2mu(0.2)"/>
+                <Parameter name="MaskType" value="Exact"/>
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.005)"/>
+            </Parameters>
+        </Process>
+        <Process name="Create Masks Oev_Lin (RMASK): Skilift" description="Mask Carto Process for Feature Class: DKM25_OEV_LIN &quot;Skilift&quot;&#xD;&#xA;Creates masks to mask raster data or black contour lines. EXECUTE ON SELECTED FEATURES ONLY.">
+            <TypeReference name="CreateFeatureMasks"/>
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_OEV_LIN;SYMBOL IN (6)"/>
+                <Parameter name="MaskDataset" value="DKM25_RMASK"/>
+                <Parameter name="MaskAttributes" value="SYMBOL=1"/>
+                <Parameter name="MaskAssociation" value="ORIGINCLASSFIELDNAME=FEATURECLASSNAME;ORIGINOIDFIELDNAME=SOURCEOID"/>
+                <Parameter name="MaskMargin" value="mm2mu(0.08)"/>
+                <Parameter name="MaskType" value="Exact"/>
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.005)"/>
+            </Parameters>
+        </Process>
+        <Process name="Create Masks Staudamm_Symb: Staudamm" description="Mask Carto Process for Feature Class: DKM25_STAUDAMM_SYMB&#xD;&#xA;Creates masks">
+            <TypeReference name="CreateFeatureMasks"/>
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_STAUDAMM_SYMB;SYMBOL IN (1)"/>
+                <Parameter name="MaskDataset" value="DKM25_STAUDAMM_SYMB_MASK"/>
+                <Parameter name="MaskAttributes" value="SYMBOL=1"/>
+                <Parameter name="MaskAssociation" value="DKM25_STAUDAMM_SYMB_MREL"/>
+                <Parameter name="MaskMargin" value="mm2mu(0.2)"/>
+                <Parameter name="MaskType" value="Exact"/>
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.005)"/>
+            </Parameters>
+        </Process>
+        <Process name="Create Masks Strasse (RMASK): Markierte_Spur" description="Mask Carto Process for Feature Class: DKM25_STRASSE&#xD;&#xA;Creates masks to mask raster data or black contour lines. EXECUTE ON SELECTED FEATURES ONLY.">
+            <TypeReference name="CreateFeatureMasks"/>
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_STRASSE;SYMBOL IN (47)"/>
+                <Parameter name="MaskDataset" value="DKM25_RMASK"/>
+                <Parameter name="MaskAttributes" value="SYMBOL=1"/>
+                <Parameter name="MaskAssociation" value="ORIGINCLASSFIELDNAME=FEATURECLASSNAME;ORIGINOIDFIELDNAME=SOURCEOID"/>
+                <Parameter name="MaskMargin" value="mm2mu(0.3)"/>
+                <Parameter name="MaskType" value="ShapeBuffer"/>
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.005)"/>
+            </Parameters>
+        </Process>
+        <Process name="Create Masks Strasse (RMASK): Weg_2m_Naturbelag, Weg_2m_nicht-befahrbar, Weg_1m" description="Mask Carto Process for Feature Class: DKM25_STRASSE&#xD;&#xA;Creates masks to mask raster data or black contour lines. EXECUTE ON SELECTED FEATURES ONLY.">
+            <TypeReference name="CreateFeatureMasks"/>
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_STRASSE;SYMBOL IN (6,7,8,9,31,32,39,40)"/>
+                <Parameter name="MaskDataset" value="DKM25_RMASK"/>
+                <Parameter name="MaskAttributes" value="SYMBOL=1"/>
+                <Parameter name="MaskAssociation" value="ORIGINCLASSFIELDNAME=FEATURECLASSNAME;ORIGINOIDFIELDNAME=SOURCEOID"/>
+                <Parameter name="MaskMargin" value="mm2mu(0.2)"/>
+                <Parameter name="MaskType" value="Exact"/>
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.005)"/>
+            </Parameters>
+        </Process>
+        <Process name="Create Masks Strasse: Weg_1m_Bruecke (Widerlager) UEBER Strasse (Kontur)" description="Mask Carto Process for Feature Class: DKM25_STRASSE&#xD;&#xA;Creates masks">
+            <TypeReference name="CreateFeatureMasks"/>
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_STRASSE;SYMBOL IN (9)"/>
+                <Parameter name="MaskDataset" value="DKM25_STRASSE_MASK"/>
+                <Parameter name="MaskAttributes" value="SYMBOL=1"/>
+                <Parameter name="MaskAssociation" value="DKM25_STRASSE_MREL"/>
+                <Parameter name="MaskMargin" value="mm2mu(0.2)"/>
+                <Parameter name="MaskOnlySymbolLayers" value="1" />
+                <Parameter name="MaskType" value="Exact"/>
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.005)"/>
+            </Parameters>
+        </Process>
+        <Process name="Create Escarpments Baute_Lin (Staudamm)" description="Symbology Escarpment Carto Process for DKM25_BAUTE_LIN (Staudamm). Creates Escarpments between HilfsLIN_Staudamm_OK and HilfsLIN_Staudamm_UK.">
+            <TypeReference name="CreateEscarpments" />
+            <Parameters>
+                <Parameter name="InputUpperEdgeDataset" value="DKM25_BAUTE_LIN; OBJEKTART = 1500" />
+                <Parameter name="InputLowerEdgeDataset" value="DKM25_BAUTE_LIN; OBJEKTART = 1600" />
+                <Parameter name="InputSearchTolerance" value="50.0" />
+                <Parameter name="EscarpmentDataset" value="DKM25_STAUDAMM_SYMB" />
+                <Parameter name="EscarpmentAttributes" value="OBJEKTART=100;SYMBOL=1" />
+                <Parameter name="EscarpmentBaseWidth" value="7.0" />
+                <Parameter name="EscarpmentStepSize" value="12.5" />
+                <Parameter name="EscarpmentAssociation" value="ORIGINCLASSFIELDNAME=FEATURECLASSNAME1;ORIGINOIDFIELDNAME=SOURCEOID1;ORIGINCLASSFIELDNAME=FEATURECLASSNAME2;ORIGINOIDFIELDNAME=SOURCEOID2"/>
+            </Parameters>
+        </Process>
+        <Process name="Create Escarpments Kleinform_Lin (Boeschung)" description="Symbology Escarpment Carto Process for DKM25_MORPH_KLEINFORM_LIN (Boeschung). Creates Escarpments between HilfsLIN_Boeschung_OK and HilfsLIN_Boeschung_UK.">
+            <TypeReference name="CreateEscarpments" />
+            <Parameters>
+                <Parameter name="InputUpperEdgeDataset" value="DKM25_MORPH_KLEINFORM_LIN; OBJEKTART = 100" />
+                <Parameter name="InputLowerEdgeDataset" value="DKM25_MORPH_KLEINFORM_LIN; OBJEKTART = 200" />
+                <Parameter name="InputSearchTolerance" value="50.0" />
+                <Parameter name="EscarpmentDataset" value="DKM25_BOESCHUNG_SYMB" />
+                <Parameter name="EscarpmentAttributes" value="OBJEKTART=100;SYMBOL=1" />
+                <Parameter name="EscarpmentBaseWidth" value="8.0" />
+                <Parameter name="EscarpmentStepSize" value="12.5" />
+                <Parameter name="EscarpmentAssociation" value="ORIGINCLASSFIELDNAME=FEATURECLASSNAME1;ORIGINOIDFIELDNAME=SOURCEOID1;ORIGINCLASSFIELDNAME=FEATURECLASSNAME2;ORIGINOIDFIELDNAME=SOURCEOID2"/>
+            </Parameters>
+        </Process>
+        <Process name="Create Escarpments Kleinform_Lin (Steinboeschung)" description="Symbology Escarpment Carto Process for DKM25_MORPH_KLEINFORM_LIN (Steinboeschung). Creates Escarpments between HilfsLIN_Steinboeschung_OK and HilfsLIN_Steinboeschung_UK.">
+            <TypeReference name="CreateEscarpments" />
+            <Parameters>
+                <Parameter name="InputUpperEdgeDataset" value="DKM25_MORPH_KLEINFORM_LIN; OBJEKTART = 800" />
+                <Parameter name="InputLowerEdgeDataset" value="DKM25_MORPH_KLEINFORM_LIN; OBJEKTART = 900" />
+                <Parameter name="InputSearchTolerance" value="50.0" />
+                <Parameter name="EscarpmentDataset" value="DKM25_BOESCHUNG_SYMB" />
+                <Parameter name="EscarpmentAttributes" value="OBJEKTART=200;SYMBOL=2" />
+                <Parameter name="EscarpmentBaseWidth" value="7.0" />
+                <Parameter name="EscarpmentStepSize" value="12.0" />
+                <Parameter name="EscarpmentAssociation" value="ORIGINCLASSFIELDNAME=FEATURECLASSNAME1;ORIGINOIDFIELDNAME=SOURCEOID1;ORIGINCLASSFIELDNAME=FEATURECLASSNAME2;ORIGINOIDFIELDNAME=SOURCEOID2"/>
+            </Parameters>
+        </Process>
+        <Process name="Create Feature Markers Freizeitareal (Campingplatz)" description="Create Feature Markers Carto Process for Feature Class: DKM25_FREIZEITAREAL&#xD;&#xA;Creates points">
+            <TypeReference name="CreateFeatureMarkers" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_FREIZEITAREAL;OBJEKTART = 100 AND SYMBOL = 1" />
+                <Parameter name="MarkerDataset" value="DKM25_FREIZEITAREAL_SYMB" />
+                <Parameter name="MarkerAttributes" value="OBJEKTART=200;SYMBOL=2;AUSRICHTUNG=0" />
+                <Parameter name="MarkerAssociation" value="ORIGINCLASSFIELDNAME=FEATURECLASSNAME;ORIGINOIDFIELDNAME=SOURCEOID" />
+                <Parameter name="BoundaryDistance" value="mm2mu(0)" />
+                <Parameter name="ObstacleDistance" value="mm2mu(0)" />
+                <Parameter name="PlacementMethod" value="PolygonCentroid" />
+            </Parameters>
+        </Process>
+        <Process name="Create Feature Markers Nutzungsareal (Unterwerkareal)" description="Create Feature Markers Carto Process for Feature Class: DKM25_NUTZUNGSAREAL&#xD;&#xA;Creates points">
+            <TypeReference name="CreateFeatureMarkers" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_NUTZUNGSAREAL;SYMBOL = 9" />
+                <Parameter name="MarkerDataset" value="DKM25_NUTZUNGSAREAL_SYMB" />
+                <Parameter name="MarkerAttributes" value="OBJEKTART=400;SYMBOL=6;AUSRICHTUNG=0" />
+                <Parameter name="MarkerAssociation" value="ORIGINCLASSFIELDNAME=FEATURECLASSNAME;ORIGINOIDFIELDNAME=SOURCEOID" />
+                <Parameter name="BoundaryDistance" value="mm2mu(0)" />
+                <Parameter name="ObstacleDistance" value="mm2mu(0)" />
+                <Parameter name="PlacementMethod" value="PolygonCentroid" />
+            </Parameters>
+        </Process>
+        <Process name="Create Marker Pattern Freizeitareal (Golfplatz)" description="Create Marker Pattern Carto Process for Feature Class: DKM25_FREIZEITAREAL&#xD;&#xA;Creates points">
+            <TypeReference name="CreateMarkerPattern" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_FREIZEITAREAL;SYMBOL = 3" />
+                <Parameter name="MarkerDataset" value="DKM25_FREIZEITAREAL_SYMB" />
+                <Parameter name="MarkerAttributes" value="OBJEKTART=100;SYMBOL=1;AUSRICHTUNG=0" />
+                <Parameter name="MarkerAssociation" value="ORIGINCLASSFIELDNAME=FEATURECLASSNAME;ORIGINOIDFIELDNAME=SOURCEOID" />
+                <Parameter name="GridType" value="Diagonal" />
+                <Parameter name="GridAngle" value="PO" />
+                <Parameter name="GridStepX" value="mm2mu(6)" />
+                <Parameter name="GridStepY" value="mm2mu(6)" />
+                <Parameter name="GridVariationX" value="0.3" />
+                <Parameter name="GridVariationY" value="0.3" />
+                <Parameter name="AvoidBoundaryOverlap" value="False" />
+                <Parameter name="BoundaryDistance" value="mm2mu(1)" />
+                <Parameter name="ObstacleDistance" value="mm2mu(0)" />
+                <Parameter name="MinMarkerDistanceX" value="mm2mu(0)" />
+                <Parameter name="MinMarkerDistanceY" value="mm2mu(0)" />
+                <Parameter name="DisplacementMethod" value="DisplaceTowardsGrid" />
+                <Parameter name="DisplacementIterations" value="3" />
+                <Parameter name="RandomSeed" value="0" />
+            </Parameters>
+        </Process>
+        <Process name="Create Marker Pattern Freizeitareal (Standplatzareal)" description="Create Marker Pattern Carto Process for Feature Class: DKM25_FREIZEITAREAL&#xD;&#xA;Creates points">
+            <TypeReference name="CreateMarkerPattern" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_FREIZEITAREAL;OBJEKTART = 700" />
+                <Parameter name="ObstacleDatasets" value="DKM25_GEBAEUDE;OBJEKTART NOT IN (1700)" />
+                <Parameter name="ObstacleDatasets" value="DKM25_STRASSE;SYMBOL NOT IN (31,32,39,40,43,44,49)" />
+                <Parameter name="MarkerDataset" value="DKM25_FREIZEITAREAL_SYMB" />
+                <Parameter name="MarkerAttributes" value="OBJEKTART=300;SYMBOL=3;AUSRICHTUNG=PO" />
+                <Parameter name="MarkerAssociation" value="ORIGINCLASSFIELDNAME=FEATURECLASSNAME;ORIGINOIDFIELDNAME=SOURCEOID" />
+                <Parameter name="GridType" value="Orthogonal" />
+                <Parameter name="GridAngle" value="PO" />
+                <Parameter name="GridStepX" value="mm2mu(0.65)" />
+                <Parameter name="GridStepY" value="mm2mu(0.56)" />
+                <Parameter name="GridVariationX" value="0" />
+                <Parameter name="GridVariationY" value="0" />
+                <Parameter name="AvoidBoundaryOverlap" value="True" />
+                <Parameter name="BoundaryDistance" value="mm2mu(0)" />
+                <Parameter name="ObstacleDistance" value="mm2mu(0)" />
+                <Parameter name="MinMarkerDistanceX" value="mm2mu(0)" />
+                <Parameter name="MinMarkerDistanceY" value="mm2mu(0)" />
+                <Parameter name="DisplacementMethod" value="DisplaceTowardsGrid" />
+                <Parameter name="DisplacementIterations" value="3" />
+                <Parameter name="RandomSeed" value="0" />
+            </Parameters>
+        </Process>
+        <Process name="Create Marker Pattern Nutzungsareal (Friedhof)" description="Create Marker Pattern Carto Process for Feature Class: DKM25_NUTZUNGSAREAL&#xD;&#xA;Creates points">
+            <TypeReference name="CreateMarkerPattern" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_NUTZUNGSAREAL;SYMBOL = 3" />
+                <Parameter name="ObstacleDatasets" value="DKM25_GEBAEUDE;OBJEKTART NOT IN (1700)" />
+                <Parameter name="MarkerDataset" value="DKM25_NUTZUNGSAREAL_SYMB" />
+                <Parameter name="MarkerAttributes" value="OBJEKTART=200;SYMBOL=2;AUSRICHTUNG=PO" />
+                <Parameter name="MarkerAssociation" value="ORIGINCLASSFIELDNAME=FEATURECLASSNAME;ORIGINOIDFIELDNAME=SOURCEOID" />
+                <Parameter name="GridType" value="Orthogonal" />
+                <Parameter name="GridAngle" value="PO" />
+                <Parameter name="GridStepX" value="mm2mu(1.1)" />
+                <Parameter name="GridStepY" value="mm2mu(1.1)" />
+                <Parameter name="GridVariationX" value="0" />
+                <Parameter name="GridVariationY" value="0" />
+                <Parameter name="AvoidBoundaryOverlap" value="False" />
+                <Parameter name="BoundaryDistance" value="mm2mu(0.4)" />
+                <Parameter name="ObstacleDistance" value="mm2mu(0.4)" />
+                <Parameter name="MinMarkerDistanceX" value="mm2mu(0)" />
+                <Parameter name="MinMarkerDistanceY" value="mm2mu(0)" />
+                <Parameter name="DisplacementMethod" value="DisplaceTowardsGrid" />
+                <Parameter name="DisplacementIterations" value="3" />
+                <Parameter name="RandomSeed" value="0" />
+            </Parameters>
+        </Process>
+        <Process name="Create Marker Pattern Nutzungsareal (Schrebergarten)" description="Create Marker Pattern Carto Process for Feature Class: DKM25_NUTZUNGSAREAL&#xD;&#xA;Creates points">
+            <TypeReference name="CreateMarkerPattern" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_NUTZUNGSAREAL;SYMBOL = 7" />
+                <Parameter name="MarkerDataset" value="DKM25_NUTZUNGSAREAL_SYMB" />
+                <Parameter name="MarkerAttributes" value="OBJEKTART=300;SYMBOL=3;AUSRICHTUNG=PO" />
+                <Parameter name="MarkerAssociation" value="ORIGINCLASSFIELDNAME=FEATURECLASSNAME;ORIGINOIDFIELDNAME=SOURCEOID" />
+                <Parameter name="GridType" value="Diagonal" />
+                <Parameter name="GridAngle" value="PO" />
+                <Parameter name="GridStepX" value="mm2mu(1)" />
+                <Parameter name="GridStepY" value="mm2mu(1)" />
+                <Parameter name="GridVariationX" value="0" />
+                <Parameter name="GridVariationY" value="0" />
+                <Parameter name="AvoidBoundaryOverlap" value="False" />
+                <Parameter name="BoundaryDistance" value="mm2mu(0.3)" />
+                <Parameter name="ObstacleDistance" value="mm2mu(0)" />
+                <Parameter name="MinMarkerDistanceX" value="mm2mu(0)" />
+                <Parameter name="MinMarkerDistanceY" value="mm2mu(0)" />
+                <Parameter name="DisplacementMethod" value="DisplaceTowardsGrid" />
+                <Parameter name="DisplacementIterations" value="0" />
+                <Parameter name="RandomSeed" value="0" />
+            </Parameters>
+        </Process>
+        <Process name="Create Random Marker Pattern Bodenbedeckung (Feuchtgebiet)" description="Create Random Marker Pattern Carto Process for Feature Class: DKM25_BODENBEDECKUNG&#xD;&#xA;Creates points">
+            <TypeReference name="CreateRandomMarkerPattern" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_BODENBEDECKUNG;SYMBOL = 3" />
+                <Parameter name="ObstacleDatasets" value="DKM25_BAUTE_LIN;SYMBOL NOT IN (8,12,13)" />
+                <Parameter name="ObstacleDatasets" value="DKM25_BAUTE_PKT;SYMBOL NOT IN (14)" />
+                <Parameter name="ObstacleDatasets" value="DKM25_EISENBAHN;SYMBOL NOT IN (10,11,12,13,14,15,18,24,25)" />
+                <Parameter name="ObstacleDatasets" value="DKM25_GEBAEUDE;OBJEKTART NOT IN (1700)" />
+                <Parameter name="ObstacleDatasets" value="DKM25_GEWAESSER_LIN;SYMBOL NOT IN (5,11)" />
+                <Parameter name="ObstacleDatasets" value="DKM25_HOEHENKOTE;SYMBOL NOT IN (3)" />
+                <Parameter name="ObstacleDatasets" value="DKM25_NAME_PKT;SYMBOL NOT IN (3)" />
+                <Parameter name="ObstacleDatasets" value="DKM25_OEV_LIN" />
+                <Parameter name="ObstacleDatasets" value="DKM25_STRASSE;SYMBOL NOT IN (31,32,39,40,43,44,49)" />
+                <Parameter name="MarkerDataset" value="DKM25_BODENBEDECKUNG_SYMB" />
+                <Parameter name="MarkerAttributes" value="OBJEKTART=100;SYMBOL=1" />
+                <Parameter name="MarkerAssociation" value="ORIGINCLASSFIELDNAME=FEATURECLASSNAME;ORIGINOIDFIELDNAME=SOURCEOID" />
+                <Parameter name="AvoidBoundaryOverlap" value="False" />
+                <Parameter name="BoundaryDistance" value="mm2mu(-0.2)" />
+                <Parameter name="ObstacleDistance" value="mm2mu(0.4)" />
+                <Parameter name="MinMarkerDistanceX" value="mm2mu(0.4)" />
+                <Parameter name="MinMarkerDistanceY" value="mm2mu(0.2)" />
+                <Parameter name="RelaxationIterations" value="1" />
+                <Parameter name="RelaxationStrength" value="0.75" />
+                <Parameter name="RandomSeed" value="0" />
+            </Parameters>
+        </Process>
+        <Process name="Create Random Marker Pattern Bodenbedeckung (Gebueschwald)" description="Create Random Marker Pattern Carto Process for Feature Class: DKM25_BODENBEDECKUNG&#xD;&#xA;Creates points">
+            <TypeReference name="CreateRandomMarkerPattern" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_BODENBEDECKUNG;SYMBOL = 4" />
+                <Parameter name="ObstacleDatasets" value="DKM25_BAUTE_LIN;SYMBOL NOT IN (2,3,8,12,13)" />
+                <Parameter name="ObstacleDatasets" value="DKM25_BAUTE_PKT;SYMBOL NOT IN (14)" />
+                <Parameter name="ObstacleDatasets" value="DKM25_EINZELBAUM" />
+                <Parameter name="ObstacleDatasets" value="DKM25_EISENBAHN;SYMBOL NOT IN (10,11,12,13,14,15,18,24,25)" />
+                <Parameter name="ObstacleDatasets" value="DKM25_GEBAEUDE;OBJEKTART NOT IN (1700)" />
+                <Parameter name="ObstacleDatasets" value="DKM25_GEWAESSER_LIN;SYMBOL NOT IN (5,11)" />
+                <Parameter name="ObstacleDatasets" value="DKM25_GEWAESSER_PLY" />
+                <Parameter name="ObstacleDatasets" value="DKM25_HOEHENKOTE;SYMBOL NOT IN (3)" />
+                <Parameter name="ObstacleDatasets" value="DKM25_NAME_PKT;SYMBOL NOT IN (3)" />
+                <Parameter name="ObstacleDatasets" value="DKM25_OEV_LIN" />
+                <Parameter name="ObstacleDatasets" value="DKM25_STRASSE;SYMBOL NOT IN (31,32,39,40,43,44,49)" />
+                <Parameter name="ObstacleDatasets" value="DKM25_BODENBEDECKUNG;SYMBOL = 2" />
+                <Parameter name="MarkerDataset" value="DKM25_BODENBEDECKUNG_SYMB" />
+                <Parameter name="MarkerAttributes" value="OBJEKTART=200;SYMBOL=2;GROESSE=0.703125" />
+                <Parameter name="MarkerAttributes" value="OBJEKTART=200;SYMBOL=2;GROESSE=0.84375" />
+                <Parameter name="MarkerAttributes" value="OBJEKTART=200;SYMBOL=2;GROESSE=0.984375" />
+                <Parameter name="MarkerAttributes" value="OBJEKTART=200;SYMBOL=2;GROESSE=1.140625" />
+                <Parameter name="MarkerAssociation" value="ORIGINCLASSFIELDNAME=FEATURECLASSNAME;ORIGINOIDFIELDNAME=SOURCEOID" />
+                <Parameter name="AvoidBoundaryOverlap" value="False" />
+                <Parameter name="BoundaryDistance" value="mm2mu(0)" />
+                <Parameter name="ObstacleDistance" value="mm2mu(0.2)" />
+                <Parameter name="MinMarkerDistanceX" value="mm2mu(0.16)" />
+                <Parameter name="MinMarkerDistanceY" value="mm2mu(0.16)" />
+                <Parameter name="RelaxationIterations" value="1" />
+                <Parameter name="RelaxationStrength" value="0" />
+                <Parameter name="RandomSeed" value="0" />
+            </Parameters>
+        </Process>
+        <Process name="Create Random Marker Pattern Bodenbedeckung (Wald_offen)" description="Create Random Marker Pattern Carto Process for Feature Class: DKM25_BODENBEDECKUNG&#xD;&#xA;Creates points">
+            <TypeReference name="CreateRandomMarkerPattern" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_BODENBEDECKUNG;SYMBOL = 6" />
+                <Parameter name="ObstacleDatasets" value="DKM25_BAUTE_LIN;SYMBOL NOT IN (2,3,8,12,13)" />
+                <Parameter name="ObstacleDatasets" value="DKM25_BAUTE_PKT;SYMBOL NOT IN (14)" />
+                <Parameter name="ObstacleDatasets" value="DKM25_EINZELBAUM" />
+                <Parameter name="ObstacleDatasets" value="DKM25_EISENBAHN;SYMBOL NOT IN (10,11,12,13,14,15,18,24,25)" />
+                <Parameter name="ObstacleDatasets" value="DKM25_GEBAEUDE;OBJEKTART NOT IN (1700)" />
+                <Parameter name="ObstacleDatasets" value="DKM25_GEWAESSER_LIN;SYMBOL NOT IN (5,11)" />
+                <Parameter name="ObstacleDatasets" value="DKM25_GEWAESSER_PLY" />
+                <Parameter name="ObstacleDatasets" value="DKM25_HOEHENKOTE;SYMBOL NOT IN (3)" />
+                <Parameter name="ObstacleDatasets" value="DKM25_NAME_PKT;SYMBOL NOT IN (3)" />
+                <Parameter name="ObstacleDatasets" value="DKM25_OEV_LIN" />
+                <Parameter name="ObstacleDatasets" value="DKM25_STRASSE;SYMBOL NOT IN (31,32,39,40,43,44,49)" />
+                <Parameter name="ObstacleDatasets" value="DKM25_BODENBEDECKUNG;SYMBOL = 2" />
+                <Parameter name="MarkerDataset" value="DKM25_BODENBEDECKUNG_SYMB" />
+                <Parameter name="MarkerAttributes" value="OBJEKTART=300;SYMBOL=4;GROESSE=1.078125" />
+                <Parameter name="MarkerAttributes" value="OBJEKTART=300;SYMBOL=4;GROESSE=1.25" />
+                <Parameter name="MarkerAssociation" value="ORIGINCLASSFIELDNAME=FEATURECLASSNAME;ORIGINOIDFIELDNAME=SOURCEOID" />
+                <Parameter name="AvoidBoundaryOverlap" value="False" />
+                <Parameter name="BoundaryDistance" value="mm2mu(0)" />
+                <Parameter name="ObstacleDistance" value="mm2mu(0.3)" />
+                <Parameter name="MinMarkerDistanceX" value="mm2mu(0.3)" />
+                <Parameter name="MinMarkerDistanceY" value="mm2mu(0.3)" />
+                <Parameter name="RelaxationIterations" value="1" />
+                <Parameter name="RelaxationStrength" value="0" />
+                <Parameter name="RandomSeed" value="0" />
+            </Parameters>
+        </Process>
+        <Process name="Create CrossingMasks STRASSE mehrlinig unter STRASSE, EISENBAHN mehrlinig" description="Mehrlinige Strassen (InputDataset) unterqueren ein- oder mehrlinige Strassen (CrossingDataset1) oder mehrlinige Eisenbahnen (CrossingDataset2). Es werden keine Decorator erzeugt.">
+            <TypeReference name="CreateCrossingMasks" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_STRASSE;SYMBOL IN (1,2,3,4,5,15,16,17,18,19,20,21,22,23,24,28,30,45,46,48)" />
+                <Parameter name="CrossingDatasets" value="DKM25_STRASSE;SYMBOL IN (1,2,3,4,5,9,15,16,17,18,19,20,21,22,23,24,28,30,45,46,48)" />
+                <Parameter name="CrossingDatasets" value="DKM25_EISENBAHN;SYMBOL IN (5,6,7,9,20,21)" />
+                <Parameter name="AboveExpression" value="input.STUFE &lt; crossing.STUFE" />
+                <Parameter name="MaskDataset" value="DKM25_STRASSE_OUMASK" />
+                <Parameter name="MaskAssociation" value="DKM25_STRASSE_OUREL" />
+                <Parameter name="MaskAttributes" value="SYMBOL = 1" />
+                <Parameter name="GrowDistanceFactor" value="1" />
+                <Parameter name="MarginAlong" value="mm2mu(0)" />
+                <Parameter name="MarginAcross" value="mm2mu(0)" />
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.0005)" />
+            </Parameters>
+        </Process>
+        <Process name="Create CrossingMasks STRASSE mehrlinig unter EISENBAHN einlinig (Dec)" description="Mehrlinige Strassen (InputDataset) unterqueren einlinige Eisenbahnen (CrossingDataset). Die Unterfuehrung wird mit Decorator symbolisiert.">
+            <TypeReference name="CreateCrossingMasks" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_STRASSE;SYMBOL IN (1,2,3,4,5,15,16,17,18,19,20,21,22,23,24,28,30,45,46,48)" />
+                <Parameter name="CrossingDatasets" value="DKM25_EISENBAHN;SYMBOL IN (4,8)" />
+                <Parameter name="AboveExpression" value="input.STUFE &lt; crossing.STUFE" />
+                <Parameter name="MaskDataset" value="DKM25_STRASSE_OUMASK" />
+                <Parameter name="MaskAssociation" value="DKM25_STRASSE_OUREL" />
+                <Parameter name="MaskAttributes" value="SYMBOL = 1" />
+                <Parameter name="GrowDistanceFactor" value="1" />
+                <Parameter name="MarginAlong" value="mm2mu(0.24)" />
+                <Parameter name="MarginAcross" value="mm2mu(0.21)" />
+                <Parameter name="DecoratorDataset" value="DKM25_STRASSE_OUDEC" />
+                <Parameter name="DecoratorAssociation" value="DKM25_STRASSE_OUDREL" />
+                <Parameter name="DecoratorAttributes" value="SYMBOL=1" />
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.0005)" />
+            </Parameters>
+        </Process>
+        <Process name="Create CrossingMasks STRASSE einlinig unter STRASSE, EISENBAHN einlinig (Dec)" description="Einlinige Strassen (InputDataset) unterqueren ein- oder mehrlinige Strassen (CrossingDataset1) oder einlinige Eisenbahnen (CrossingDataset2). Die Unterfuehrung wird mit Decorator symbolisiert.">
+            <TypeReference name="CreateCrossingMasks" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_STRASSE;SYMBOL IN (6,7,8,9,29)" />
+                <Parameter name="CrossingDatasets" value="DKM25_STRASSE;SYMBOL IN (1,2,3,4,5,6,7,8,9,15,16,17,18,19,20,21,22,23,24,28,30,45,46,48)" />
+                <Parameter name="CrossingDatasets" value="DKM25_EISENBAHN;SYMBOL IN (4,8,20,21)" />
+                <Parameter name="AboveExpression" value="input.STUFE &lt; crossing.STUFE" />
+                <Parameter name="MaskDataset" value="DKM25_STRASSE_OUMASK" />
+                <Parameter name="MaskAssociation" value="DKM25_STRASSE_OUREL" />
+                <Parameter name="MaskAttributes" value="SYMBOL = 1" />
+                <Parameter name="GrowDistanceFactor" value="1" />
+                <Parameter name="MarginAlong" value="mm2mu(0.24)" />
+                <Parameter name="MarginAcross" value="mm2mu(0.26)" />
+                <Parameter name="DecoratorDataset" value="DKM25_STRASSE_OUDEC" />
+                <Parameter name="DecoratorAssociation" value="DKM25_STRASSE_OUDREL" />
+                <Parameter name="DecoratorAttributes" value="SYMBOL=1" />
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.0005)" />
+            </Parameters>
+        </Process>
+        <Process name="Create CrossingMasks STRASSE einlinig unter EISENBAHN mehrlinig" description="Einlinige Strassen (InputDataset) unterqueren mehrlinige Eisenbahnen (CrossingDataset). Es werden keine Decorator erzeugt.">
+            <TypeReference name="CreateCrossingMasks" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_STRASSE;SYMBOL IN (6,7,8,9,29)" />
+                <Parameter name="CrossingDatasets" value="DKM25_EISENBAHN;SYMBOL IN (5,6,7,9,20,21)" />
+                <Parameter name="AboveExpression" value="input.STUFE &lt; crossing.STUFE" />
+                <Parameter name="MaskDataset" value="DKM25_STRASSE_OUMASK" />
+                <Parameter name="MaskAssociation" value="DKM25_STRASSE_OUREL" />
+                <Parameter name="MaskAttributes" value="SYMBOL = 1" />
+                <Parameter name="GrowDistanceFactor" value="1" />
+                <Parameter name="MarginAlong" value="mm2mu(0)" />
+                <Parameter name="MarginAcross" value="mm2mu(0)" />
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.0005)" />
+            </Parameters>
+        </Process>
+        <Process name="Create CrossingMasks STRASSE mehrlinig Niveau GEWAESSER_LIN (Furt)" description="Mehrlinige Strassen (InputDataset, KUNSTBAUTE = Furt) kreuzen Fliessgewaesser (CrossingDataset) auf gleicher Stufe.">
+            <TypeReference name="CreateCrossingMasks" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_STRASSE;SYMBOL IN (1,2,3,4,5,15,16,17,18,19,20,21,22,23,24,28,30,45,46,48) AND KUNSTBAUTE IN (600)" />
+                <Parameter name="CrossingDatasets" value="DKM25_GEWAESSER_LIN;SYMBOL IN (1,6)" />
+                <Parameter name="AboveExpression" value="input.STUFE = crossing.STUFE" />
+                <Parameter name="MaskDataset" value="DKM25_STRASSE_OUMASK" />
+                <Parameter name="MaskAssociation" value="DKM25_STRASSE_OUREL" />
+                <Parameter name="MaskAttributes" value="SYMBOL = 1" />
+                <Parameter name="GrowDistanceFactor" value="1" />
+                <Parameter name="MarginAlong" value="mm2mu(-0.12)" />
+                <Parameter name="MarginAcross" value="mm2mu(0)" />
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.0005)" />
+            </Parameters>
+        </Process>
+        <Process name="Create CrossingMasks STRASSE mehrlinig Niveau GEWAESSER_PLY (Furt)" description="Mehrlinige Strassen (InputDataset, KUNSTBAUTE = Furt) kreuzen Fliessgewaesser (CrossingDataset) auf gleicher Stufe.">
+            <TypeReference name="CreateCrossingMasks" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_STRASSE;SYMBOL IN (1,2,3,4,5,15,16,17,18,19,20,21,22,23,24,28,30,45,46,48) AND KUNSTBAUTE IN (600)" />
+                <Parameter name="CrossingDatasets" value="DKM25_GEWAESSER_PLY;SYMBOL = 1" />
+                <Parameter name="AboveExpression" value="1 = 1" />
+                <Parameter name="MaskDataset" value="DKM25_STRASSE_OUMASK" />
+                <Parameter name="MaskAssociation" value="DKM25_STRASSE_OUREL" />
+                <Parameter name="MaskAttributes" value="SYMBOL = 1" />
+                <Parameter name="GrowDistanceFactor" value="1" />
+                <Parameter name="MarginAlong" value="mm2mu(-0.12)" />
+                <Parameter name="MarginAcross" value="mm2mu(0)" />
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.0005)" />
+            </Parameters>
+        </Process>
+        <Process name="Create CrossingMasks STRASSE mehrlinig Niveau EISENBAHN" description="Mehrlinige Strassen (InputDataset) kreuzen ein- oder mehrlinige Eisenbahnen (CrossingDataset) auf gleicher Stufe.">
+            <TypeReference name="CreateCrossingMasks" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_STRASSE;SYMBOL IN (1,2,3,4,5,15,16,17,18,19,20,21,22,23,24,28,30,45,46,48)" />
+                <Parameter name="CrossingDatasets" value="DKM25_EISENBAHN;SYMBOL IN (4,5,6,7,8,9,20,21,22,24)" />
+                <Parameter name="AboveExpression" value="input.STUFE = crossing.STUFE" />
+                <Parameter name="MaskDataset" value="DKM25_STRASSE_OUMASK" />
+                <Parameter name="MaskAssociation" value="DKM25_STRASSE_OUREL" />
+                <Parameter name="MaskAttributes" value="SYMBOL = 1" />
+                <Parameter name="GrowDistanceFactor" value="1" />
+                <Parameter name="MarginAlong" value="mm2mu(-0.12)" />
+                <Parameter name="MarginAcross" value="mm2mu(0)" />
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.0005)" />
+            </Parameters>
+        </Process>
+        <Process name="Create CrossingMasks EISENBAHN unter EISENBAHN einlinig" description="Ein- oder mehrlinige Eisenbahnen (InputDataset) unterqueren einlinige Eisenbahnen (CrossingDataset). Es werden keine Decorator erzeugt, aber die unterfuehrende Linie wird ausgespart (Margin).">
+            <TypeReference name="CreateCrossingMasks" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_EISENBAHN;SYMBOL IN (4,5,6,7,8,9,16,20,21,22,24)" />
+                <Parameter name="CrossingDatasets" value="DKM25_EISENBAHN;SYMBOL IN (4,8)" />
+                <Parameter name="AboveExpression" value="input.STUFE &lt; crossing.STUFE" />
+                <Parameter name="MaskDataset" value="DKM25_EISENBAHN_OUMASK" />
+                <Parameter name="MaskAssociation" value="DKM25_EISENBAHN_OUREL" />
+                <Parameter name="MaskAttributes" value="SYMBOL = 1" />
+                <Parameter name="GrowDistanceFactor" value="1" />
+                <Parameter name="MarginAlong" value="mm2mu(0.01)" />
+                <Parameter name="MarginAcross" value="mm2mu(0.2)" />
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.0005)" />
+            </Parameters>
+        </Process>
+        <Process name="Create CrossingMasks EISENBAHN unter EISENBAHN mehrlinig" description="Ein- oder mehrlinige Eisenbahnen (InputDataset) unterqueren mehrlinige Eisenbahnen (CrossingDataset). Es werden keine Decorator erzeugt.">
+            <TypeReference name="CreateCrossingMasks" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_EISENBAHN;SYMBOL IN (4,5,6,7,8,9,16,20,21,22,24)" />
+                <Parameter name="CrossingDatasets" value="DKM25_EISENBAHN;SYMBOL IN (5,6,7,9,20,21,24)" />
+                <Parameter name="AboveExpression" value="input.STUFE &lt; crossing.STUFE" />
+                <Parameter name="MaskDataset" value="DKM25_EISENBAHN_OUMASK" />
+                <Parameter name="MaskAssociation" value="DKM25_EISENBAHN_OUREL" />
+                <Parameter name="MaskAttributes" value="SYMBOL = 1" />
+                <Parameter name="GrowDistanceFactor" value="1" />
+                <Parameter name="MarginAlong" value="mm2mu(0)" />
+                <Parameter name="MarginAcross" value="mm2mu(0)" />
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.0005)" />
+            </Parameters>
+        </Process>
+        <Process name="Create CrossingMasks EISENBAHN (auf Strasse) unter STRASSE" description="Ein- oder mehrlinige Eisenbahnen (InputDataset) unterqueren mehrlinige Eisenbahnen (CrossingDataset). Es werden keine Decorator erzeugt.">
+            <TypeReference name="CreateCrossingMasks" />
+            <Parameters>
+                <Parameter name="InputDataset" value="DKM25_EISENBAHN;SYMBOL IN (16,22,23)" />
+                <Parameter name="CrossingDatasets" value="DKM25_STRASSE;SYMBOL IN (1,2,3,4,5,6,7,8,9,15,16,17,18,19,20,21,22,23,24,28,29,30,45,46,48)" />
+                <Parameter name="AboveExpression" value="input.STUFE &lt; crossing.STUFE" />
+                <Parameter name="MaskDataset" value="DKM25_EISENBAHN_OUMASK" />
+                <Parameter name="MaskAssociation" value="DKM25_EISENBAHN_OUREL" />
+                <Parameter name="MaskAttributes" value="SYMBOL = 1" />
+                <Parameter name="GrowDistanceFactor" value="1" />
+                <Parameter name="MarginAlong" value="mm2mu(0)" />
+                <Parameter name="MarginAcross" value="mm2mu(0)" />
+                <Parameter name="SimplificationTolerance" value="mm2mu(0.0005)" />
+            </Parameters>
+        </Process>
+    </Processes>
+    <Types>
+        <ProcessType name="AdjustRoundabouts">
+          <ClassDescriptor type="ProSuite.Shared.AGP.Carto.Processes.AdjustRoundabouts" />
+        </ProcessType>
+        <ProcessType name="AlignSymbols">
+            <ClassDescriptor type="ProSuite.Shared.AGP.Carto.Processes.AlignSymbols" />
+        </ProcessType>
+        <ProcessType name="CalculateLineJunctions">
+            <ClassDescriptor type="ProSuite.Shared.AGP.Carto.Processes.CalculateLineJunctions" />
+        </ProcessType>
+        <ProcessType name="CreateAnnotation">
+            <ClassDescriptor type="ProSuite.Shared.AGP.Carto.Processes.Annotations.CreateAnnotation" />
+        </ProcessType>
+        <ProcessType name="SetControlPointsAtCrossings">
+            <ClassDescriptor type="ProSuite.Shared.AGP.Carto.Processes.SetControlPointsAtCrossings" />
+        </ProcessType>
+        <ProcessType name="CreateCrossingMasks">
+            <ClassDescriptor type="ProSuite.Shared.AGP.Carto.Processes.CreateCrossingMasks" />
+        </ProcessType>
+        <ProcessType name="CreateEscarpments">
+            <ClassDescriptor type="ProSuite.Shared.AGP.Carto.Processes.CreateEscarpments" />
+        </ProcessType>
+        <ProcessType name="CreateFeatureMasks">
+            <ClassDescriptor type="ProSuite.Shared.AGP.Carto.Processes.CreateFeatureMasks" />
+        </ProcessType>
+        <ProcessType name="CreateFeatureMarkers">
+          <ClassDescriptor type="ProSuite.Shared.AGP.Carto.Processes.CreateFeatureMarkers" />
+        </ProcessType>
+        <ProcessType name="CreateMarkerPattern">
+            <ClassDescriptor type="ProSuite.Shared.AGP.Carto.Processes.CreateMarkerPattern" />
+        </ProcessType>
+        <ProcessType name="CreateRandomMarkerPattern">
+            <ClassDescriptor type="ProSuite.Shared.AGP.Carto.Processes.CreateRandomMarkerPattern" />
+        </ProcessType>
+        <ProcessType name="GroupCartoProcess">
+            <ClassDescriptor type="ProSuite.Shared.AGP.Carto.Processes.GroupCartoProcess" />
+        </ProcessType>
+    </Types>
+</CartoProcesses>
