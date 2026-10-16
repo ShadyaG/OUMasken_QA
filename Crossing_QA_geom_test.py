@@ -5,6 +5,58 @@ import re
 
 arcpy.ClearWorkspaceCache_management()
 
+
+# ===============================================================
+# QA TOOL: Cartographic Crossing Mask Detection (New Pipeline)
+# ---------------------------------------------------------------
+#
+# Improvement over previous pipeline:
+#   The previous version generated Feature Outline Masks for ALL
+#   selected features before filtering. This version first performs
+#   a centre-line geometry intersect and applies the STUFE rule to
+#   identify the small subset of features that actually cross, then
+#   generates masks ONLY for those features. This reduces mask
+#   generation time significantly for large datasets.
+#
+# Pipeline overview (per process config):
+#   1.  Select input roads from the GDB using the XML WHERE clause
+#   2.  Select crossing roads/rails from the GDB
+#   3.  Geometry intersect (centre-lines): find all pairs that
+#       actually cross geometrically — pre-filter before masking
+#   4.  Apply STUFE rule on geometry intersect: keep only pairs
+#       where input STUFE < crossing STUFE (tunnel under bridge)
+#   5.  Generate solid Feature Outline Masks only for the surviving
+#       feature OBJECTIDs (dash effects stripped from CIM temporarily)
+#   6.  Intersect the mask polygons to find visual overlap areas
+#       (both polygon and point output)
+#   7.  Apply STUFE rule again on the mask intersect + dissolve
+#       to one row per (input, crossing) pair
+#   8.  Build in-memory geometry lookups for fast per-row access
+#   9.  Classify each candidate pair using four rules:
+#         - No overlap polygon → invalid
+#         - Fewer than 4 boundary points → endpoint touch
+#         - No geometry intersection point in this config → endpoint touch
+#         - Erase-and-split test + shared endpoint check → true/false crossing
+#   10. Write output with CROSS_TYPE and MASK_ERROR_TYP flags
+#
+# Inputs (from XML config per process):
+#   - Input dataset + WHERE clause (the "lower" road/rail)
+#   - Crossing dataset(s) + WHERE clause (the "upper" road/rail)
+#   - AboveExpression: SQL WHERE clause for STUFE_input < STUFE_crossing
+#   - MaskDataset: FC containing existing cartographic mask polygons
+#   - MaskAssociation: table linking road features (LINEID) to masks (MASKID)
+#
+# Outputs:
+#   - QA_ValidCrossings_<i>: per-config point FC, one row per crossing pair
+#   - QA_ValidCrossings: merged result across all configs
+#   Fields:
+#     CROSS_SOURCE   — which crossing dataset produced this row
+#     CROSS_TYPE     — "CROSSING", "ENDPOINT_TOUCH", or "NO_POLYGON"
+#     MASK_ERROR     — 0 = no error, 1 = mask missing or misplaced
+#     MASK_ERROR_TYP — "OK", "NO_MASK", "MASK_MISPLACED", or "N/A"
+#     PART_COUNT     — number of parts in the dissolved crossing point geometry
+# ===============================================================
+
 # -------------------------------------------------------
 # HELPERS
 # -------------------------------------------------------
@@ -150,7 +202,7 @@ def read_symbol_widths(layer_name, m, reference_scale):
 
 
 def is_true_crossing(
-    mask_geom, in_line_geom, cr_line_geom, overlap_poly, geom_inter_pts
+        mask_geom, in_line_geom, cr_line_geom, overlap_poly, geom_inter_pts
 ):
     """
     For each part of the overlap polygon, a valid crossing requires:
@@ -312,7 +364,6 @@ with arcpy.da.SearchCursor(mask_fc, ["OBJECTID", "SHAPE@"]) as cur:
 print(f"  Lines with masks: {len(mask_lookup)}")
 print(f"  Mask geometries:  {len(mask_geom_lookup)}")
 
-
 # -------------------------------------------------------
 # PER-CONFIG PROCESSING LOOP
 # -------------------------------------------------------
@@ -320,9 +371,9 @@ print(f"  Mask geometries:  {len(mask_geom_lookup)}")
 result_fcs = []
 
 for i, cfg in enumerate(crossing_configs):
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print(f"PROCESSING CONFIG {i}: {cfg['ds']}")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
     # -------------------------------------------------------
     # 1. SELECT INPUTs
     # -------------------------------------------------------
@@ -616,7 +667,7 @@ for i, cfg in enumerate(crossing_configs):
     # Overlap polygon lookup: (in_mask_fid, cr_mask_fid) -> unioned polygon
     overlap_poly_lookup = {}
     with arcpy.da.SearchCursor(
-        valid_poly, [in_mask_fid, inter_cr_fid, "SHAPE@"]
+            valid_poly, [in_mask_fid, inter_cr_fid, "SHAPE@"]
     ) as cur:
         for in_fid, cr_fid, poly_geom in cur:
             if cr_fid is not None and cr_fid != -1:
@@ -651,7 +702,7 @@ for i, cfg in enumerate(crossing_configs):
     count_endpoint = 0
 
     with arcpy.da.SearchCursor(
-        valid_pt, ["ORIG_OID", in_mask_fid, inter_cr_fid]
+            valid_pt, ["ORIG_OID", in_mask_fid, inter_cr_fid]
     ) as cur:
         for orig_oid, in_fid, cross_fid in cur:
             if cross_fid is None or cross_fid == -1:

@@ -14,18 +14,19 @@ arcpy.ClearWorkspaceCache_management()
 #   that a cartographic mask polygon exists at each such crossing.
 #
 # Pipeline overview (per process config):
-#   1. Select input roads + crossing roads/rails from the GDB
-#   2. Run a geometry (centre-line) intersect to find candidate
-#      crossing pairs — this avoids generating masks for all features
-#   3. Apply the STUFE rule: keep only pairs where the input road
-#      is at a strictly lower level than the crossing feature
-#   4. Generate solid Feature Outline Masks only for the surviving
-#      features (dash effects stripped temporarily from the CIM)
-#   5. Intersect the mask polygons to find visual overlap areas
-#   6. For each overlap polygon, verify it represents a true crossing
-#      using three conditions (see is_true_crossing)
-#   7. Check whether existing masks in the GDB cover each confirmed
-#      crossing, and flag missing or misplaced ones
+#   1. Select input features and generate Feature Outline Masks
+#      (solid masks are used for dashed lines to avoid gaps in the symbology)
+#   2. Load lookups linking input features to their existing masks
+#      and mask IDs to their geometries
+#   3. Select crossing features and generate their Feature Outline Masks
+#   4. Intersect input and crossing masks to generate polygon and
+#      point intersections
+#   5. Apply the STUFE rule and dissolve results so each input/crossing
+#      feature pair is represented by a single entity
+#   6. Build lookups for intersection polygons and points, then filter
+#      for true crossings (see TRUE_CROSSING)
+#   7. Check whether existing masks cover each confirmed crossing,
+#      and flag missing or misplaced masks
 #
 # Inputs (from XML config per process):
 #   - Input dataset + WHERE clause (the "lower" road/rail)
@@ -478,7 +479,7 @@ with arcpy.da.SearchCursor(f"{gdb}/QA_InputMasks", [in_fid_field, "SHAPE@"]) as 
 
 input_line_geom = {}
 with arcpy.da.SearchCursor(
-    input_ds, ["OBJECTID", "SHAPE@"], where_clause=input_where
+        input_ds, ["OBJECTID", "SHAPE@"], where_clause=input_where
 ) as cur:
     for oid, geom in cur:
         input_line_geom[oid] = geom
@@ -583,7 +584,7 @@ for i, cfg in enumerate(crossing_configs):
 
     cross_line_geom = {}
     with arcpy.da.SearchCursor(
-        cross_ds, ["OBJECTID", "SHAPE@"], where_clause=cross_where
+            cross_ds, ["OBJECTID", "SHAPE@"], where_clause=cross_where
     ) as cur:
         for oid, geom in cur:
             cross_line_geom[oid] = geom
@@ -690,7 +691,7 @@ for i, cfg in enumerate(crossing_configs):
 
     overlap_poly_lookup = {}
     with arcpy.da.SearchCursor(
-        valid_poly, [in_fid_field, inter_cr_fid, "SHAPE@"]
+            valid_poly, [in_fid_field, inter_cr_fid, "SHAPE@"]
     ) as cur:
         for in_fid, cr_fid, poly_geom in cur:
             if cr_fid is not None and cr_fid != -1:
@@ -733,7 +734,7 @@ for i, cfg in enumerate(crossing_configs):
     true_cross_oids = set()
 
     with arcpy.da.SearchCursor(
-        valid_pt, ["ORIG_OID", in_fid_field, inter_cr_fid]
+            valid_pt, ["ORIG_OID", in_fid_field, inter_cr_fid]
     ) as cur:
         for orig_oid, in_fid, cross_fid in cur:
             if cross_fid is None or cross_fid == -1:
